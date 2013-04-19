@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table,td,th {
+	border: 1px solid black;
+}
