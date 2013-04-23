@@ -8,43 +8,29 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.hhdys.dao.AccountMapper;
 import com.hhdys.model.Account;
 import com.hhdys.model.AccountExample;
 
 public class AccountServiceImpl implements AccountService {
-	private SqlSessionFactory factory;
-
+	private SqlSession session;
 	@Override
 	public boolean addUser(Account account) {
-		SqlSession session = factory.openSession();
 		try {
 			AccountMapper dao = session.getMapper(AccountMapper.class);
 			dao.insert(account);
-			session.commit();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			session.close();
-		}
+		} 
 		return false;
 	}
 
-	public SqlSessionFactory getFactory() {
-		return factory;
-	}
-
-	@Resource(name = "sqlSessionFactory")
-	public void setFactory(SqlSessionFactory factory) {
-		this.factory = factory;
-	}
+	
 
 	@Override
 	public boolean checkUser(String userName, String password) {
-		SqlSession session = factory.openSession();
 		try {
 			AccountExample example = new AccountExample();
 			AccountExample.Criteria criteria = example.createCriteria();
@@ -56,15 +42,12 @@ public class AccountServiceImpl implements AccountService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			session.close();
 		}
 		return false;
 	}
 
 	@Override
 	public List<Account> getUserList(String condition, int pageSize, int curPage) {
-		SqlSession session = factory.openSession();
 		try {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("condition", condition);
@@ -74,29 +57,23 @@ public class AccountServiceImpl implements AccountService {
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			session.close();
-		}
+		} 
 		return null;
 	}
 
 	@Override
 	public int getTotalSize(String condition) {
-		SqlSession session = factory.openSession();
 		try {
 			int count = session.selectOne("com.hhdys.dao.AccountMapper.select_page_count", condition);
 			return count;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			session.close();
 		}
 		return 0;
 	}
 
 	@Override
 	public boolean delAccount(String ids) {
-		SqlSession session = factory.openSession();
 		try {
 			String[] id = ids.split(",");
 			List<Integer> list = new ArrayList<>();
@@ -111,9 +88,17 @@ public class AccountServiceImpl implements AccountService {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			session.close();
-		}
+		} 
 		return false;
+	}
+
+
+
+	public SqlSession getSession() {
+		return session;
+	}
+	@Resource(name="sqlSession")
+	public void setSession(SqlSession session) {
+		this.session = session;
 	}
 }
