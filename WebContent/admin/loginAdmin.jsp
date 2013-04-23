@@ -5,7 +5,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登录</title>
+<script type="text/javascript" src="../js/jquery.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
+<script type="text/javascript">
+	$(function() {
+		$("#userName").focus();
+	});
+	function checkInput() {
+		if ($.trim($("#userName").val()) == "") {
+			alert("用户名不能为空！");
+			return false;
+		}
+		if ($.trim($("#password").val()) == "") {
+			alert("密码不能为空！");
+			return false;
+		}
+	}
+</script>
 </head>
 <body>
 	<form action="login!login" method="post">
@@ -24,8 +40,8 @@
 					<td><input type="password" id="password" name="password" /></td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center"><input type="submit" value="登录" />
-						<input type="reset" value="重置" /></td>
+					<td colspan="2" align="center"><input type="submit" value="登录"
+						onclick="return checkInput()" /> <input type="reset" value="重置" /></td>
 				</tr>
 			</table>
 		</div>
