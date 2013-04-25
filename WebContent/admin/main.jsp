@@ -13,7 +13,7 @@
 <link rel="stylesheet" type="text/css" href="../css/easyui/icon.css">
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
-<body class="easyui-layout"  fit="true">
+<body class="easyui-layout" fit="true">
 	<div region="north" style="height: 100px; text-align: center;">
 		<h3>后台管理系统</h3>
 	</div>
@@ -42,6 +42,5 @@
 			}
 		}
 	</script>
-
 </body>
 </html>

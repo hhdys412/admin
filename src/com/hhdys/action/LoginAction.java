@@ -2,7 +2,6 @@ package com.hhdys.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,9 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.hhdys.model.Account;
@@ -28,16 +28,29 @@ public class LoginAction extends ActionSupport {
 	HttpServletRequest request = ServletActionContext.getRequest();
 	HttpServletResponse response = ServletActionContext.getResponse();
 
+	@Action(results = { @Result(name = "index",location="login!index", type = "redirect") })
 	public String login() {
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		if (as.checkUser(userName, password)) {
 			Cookie cookie = new Cookie("username", userName);
 			response.addCookie(cookie);
-			return "main";
+			return "index";
 		}
 		request.setAttribute("msg", "用户名或密码不对!");
 		return "../pub/tips";
+	}
+
+	public String index() {
+		Cookie[] cookie = request.getCookies();
+		if (cookie != null) {
+			for (Cookie c : cookie) {
+				if (c.getName().equals("username") && c.getValue() != null) {
+					return "main";
+				}
+			}
+		}
+		return "loginout";
 	}
 
 	public void showList() throws IOException {
@@ -62,7 +75,7 @@ public class LoginAction extends ActionSupport {
 		response.setCharacterEncoding("utf-8");
 		String ids = request.getParameter("id");
 		PrintWriter out = response.getWriter();
-		if(as.delAccount(ids)){
+		if (as.delAccount(ids)) {
 			out.write("{\"success\":true,\"msg\":\"删除成功！\"}");
 		}
 		out.flush();
