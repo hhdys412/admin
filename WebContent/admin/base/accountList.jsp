@@ -37,10 +37,10 @@
 </style>
 </head>
 <body>
-	<div>
-		<table id="dg" title="用户管理" class="easyui-datagrid"
-			url="../login!showList" toolbar="#toolbar" pagination="true"
-			fitColumns="true" rownumbers="true">
+	<div class="divpadding">
+		<table id="dg" class="easyui-datagrid" url="login!showList"
+			toolbar="#toolbar" pagination="true" fitColumns="true"
+			rownumbers="true">
 			<thead>
 				<tr>
 					<th field="username" width="80">用户名</th>
@@ -134,7 +134,7 @@
 					ids = ids.substring(0, ids.length - 1);
 					$.messager.confirm('Confirm', '你确定要进行删除操作', function(r) {
 						if (r) {
-							$.post('../login!delAccount', {
+							$.post('login!delAccount', {
 								id : ids
 							}, function(result) {
 								if (result.success) {

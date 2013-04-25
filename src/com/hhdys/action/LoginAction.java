@@ -28,7 +28,7 @@ public class LoginAction extends ActionSupport {
 	HttpServletRequest request = ServletActionContext.getRequest();
 	HttpServletResponse response = ServletActionContext.getResponse();
 
-	@Action(results = { @Result(name = "index",location="login!index", type = "redirect") })
+	@Action(results = { @Result(name = "index", location = "login!index", type = "redirect") })
 	public String login() {
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
@@ -45,7 +45,7 @@ public class LoginAction extends ActionSupport {
 		Cookie[] cookie = request.getCookies();
 		if (cookie != null) {
 			for (Cookie c : cookie) {
-				if (c.getName().equals("username") && c.getValue() != null) {
+				if (c.getName().equals("username") && c.getValue() != null && !c.getValue().equals("")) {
 					return "main";
 				}
 			}

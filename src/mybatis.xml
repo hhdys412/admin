@@ -4,6 +4,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<mappers>
-		<mapper resource="config/AccountMapper.xml"/>
+		<mapper resource="config/AccountMapper.xml" />
+		<mapper resource="config/DepartmentMapper.xml" />
+		<mapper resource="config/PositionMapper.xml" />
+		<mapper resource="config/RoleMapper.xml" />
+		<mapper resource="config/MenuTreeMapper.xml" />
 	</mappers>
 </configuration>

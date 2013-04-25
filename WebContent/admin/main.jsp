@@ -15,13 +15,18 @@
 </head>
 <body class="easyui-layout" fit="true">
 	<div region="north" style="height: 100px; text-align: center;">
-		<h3>后台管理系统</h3>
+		<div>
+			<h3>后台管理系统</h3>
+		</div>
+		<div style="width: 200px; margin: 30px 0px 0px 0px; float: right;">
+			${cookie.username.value }，<a href="loginout.jsp">登出</a>
+		</div>
 	</div>
 	<div region="west" split="true" title="菜单栏" style="width: 150px;">
 		<a href="#" class="easyui-linkbutton"
-			onclick="addTab('买卖宝OA','http://oa.ebinf.com')">买卖宝OA</a> <a href="#"
+			onclick="addTab('部门管理','base/departmentList.jsp')">部门管理</a> <a href="#"
 			class="easyui-linkbutton"
-			onclick="addTab('用户管理','account/accountList.jsp')">用户管理</a> <a
+			onclick="addTab('用户管理','base/accountList.jsp')">用户管理</a> <a
 			href="#" class="easyui-linkbutton"
 			onclick="addTab('easyui','http://jeasyui.com/')">easyui</a>
 	</div>
@@ -31,12 +36,15 @@
 			if ($('#content').tabs('exists', title)) {
 				$('#content').tabs('select', title);
 			} else {
-				var content = '<iframe scrolling="auto" frameborder="0"  src="'
+				/**
+				var content = '<iframe scrolling="no" frameborder="0"  src="'
 						+ url
-						+ '" style="width:99%;height:90%;margin: 5px 5px 5px 5px;"></iframe>';
+						+ '" style="width:1000px;height:600px;margin: 5px 5px 5px 5px;"></iframe>';
+						*/
 				$('#content').tabs('add', {
 					title : title,
-					content : content,
+					//content : content,
+					href:url,
 					closable : true
 				});
 			}

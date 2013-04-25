@@ -8,7 +8,7 @@
     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	<context:annotation-config />
 	<context:component-scan base-package="com.hhdys.action,com.hhdys.service" />
-	<context:property-placeholder location="classpath:jdbc.properties"/>
+	<context:property-placeholder location="classpath:jdbc.properties" />
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
@@ -28,5 +28,5 @@
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 	<bean name="as" class="com.hhdys.service.AccountServiceImpl"></bean>
-
+	<bean name="department" class="com.hhdys.service.DepartmentServiceImpl"></bean>
 </beans>
