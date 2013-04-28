@@ -29,4 +29,5 @@
 	</bean>
 	<bean name="as" class="com.hhdys.service.AccountServiceImpl"></bean>
 	<bean name="department" class="com.hhdys.service.DepartmentServiceImpl"></bean>
+	<bean name="position" class="com.hhdys.service.PositionServiceImpl"></bean>
 </beans>

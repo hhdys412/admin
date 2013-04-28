@@ -28,7 +28,7 @@
 			class="easyui-linkbutton"
 			onclick="addTab('用户管理','base/accountList.jsp')">用户管理</a> <a
 			href="#" class="easyui-linkbutton"
-			onclick="addTab('easyui','http://jeasyui.com/')">easyui</a>
+			onclick="addTab('职位管理','base/positionList.jsp')">职位管理</a>
 	</div>
 	<div id="content" region="center" class="easyui-tabs"></div>
 	<script type="text/javascript">

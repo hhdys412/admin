@@ -230,7 +230,7 @@
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="parentId != null" >
+      <if test="parentId != null and parentId>0" >
         parent_id = #{parentId,jdbcType=NUMERIC},
       </if>
     </set>

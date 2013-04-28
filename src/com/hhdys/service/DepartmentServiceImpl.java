@@ -55,4 +55,27 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return null;
 	}
 
+	@Override
+	public boolean addDepartment(Department department) {
+		DepartmentMapper dao = session.getMapper(DepartmentMapper.class);
+		dao.insert(department);
+		return true;
+	}
+
+	@Override
+	public void delDepartment(int id) {
+		DepartmentMapper dao = session.getMapper(DepartmentMapper.class);
+		dao.deleteByPrimaryKey(id);
+		DepartmentExample example = new DepartmentExample();
+		DepartmentExample.Criteria criteria = example.createCriteria();
+		criteria.andParentIdEqualTo(id);
+		dao.deleteByExample(example);
+	}
+
+	@Override
+	public void updateDepartment(Department department) {
+		DepartmentMapper dao = session.getMapper(DepartmentMapper.class);
+		dao.updateByPrimaryKeySelective(department);
+	}
+
 }

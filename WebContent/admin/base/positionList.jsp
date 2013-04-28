@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>用户列表</title>
+<title>职位列表</title>
 <script type="text/javascript" src="../../js/jquery.js"></script>
 <script type="text/javascript" src="../../js/jquery.easyui.js"></script>
 <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>
@@ -38,18 +38,13 @@
 </head>
 <body>
 	<div class="divpadding">
-		<table id="dg" class="easyui-datagrid" url="login!showList"
-			toolbar="#toolbar" pagination="true" fitColumns="true"
-			rownumbers="true">
+		<table id="dg" class="easyui-datagrid" url="../position!getList"
+			toolbar="#toolbar" fitColumns="false" rownumbers="true"
+			data-options="onBeforeEdit:beforeEdit,onAfterEdit:afterEdit,onCancelEdit:cancelEdit">
 			<thead>
 				<tr>
-					<th field="username" width="80">用户名</th>
-					<th field="name" width="80">姓名</th>
-					<th field="sex" width="80">性别</th>
-					<th field="age" width="80">年龄</th>
-					<th field="position" width="80">职位</th>
-					<th field="role" width="80">角色</th>
-					<th field="lastLoginTime">上次登录时间</th>
+					<th width="200" data-options="field:'name',editor:{type:'text'}">职位</th>
+					<th width="100" data-options="field:'action',formatter:format">操作</th>
 				</tr>
 			</thead>
 		</table>
@@ -59,7 +54,7 @@
 				href="javascript:void(0)" class="easyui-linkbutton"
 				iconCls="icon-edit" plain="true" onclick="editUser()">编辑</a> <a
 				href="javascript:void(0)" class="easyui-linkbutton"
-				iconCls="icon-remove" plain="true" onclick="destroyUser()">删除</a>
+				iconCls="icon-remove" plain="true" onclick="destroyPosition()">删除</a>
 		</div>
 
 		<div id="dlg" class="easyui-dialog" style="padding: 10px 20px"
@@ -90,6 +85,25 @@
 				iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">Cancel</a>
 		</div>
 		<script type="text/javascript">
+			var beforeEdit = function(index, row) {
+				row.editing = true;
+				updateActions(index);
+			}
+			var afterEdit = function(index, row) {
+				row.editing = false;
+				updateActions(index);
+				submitChange();
+			}
+			var cancelEdit = function(index, row) {
+				row.editing = false;
+				updateActions(index);
+			}
+			function updateActions(index) {
+				$('#dg').datagrid('updateRow', {
+					index : index,
+					row : {}
+				});
+			}
 			var url;
 			function newUser() {
 				$('#dlg').dialog('open').dialog('setTitle', 'New User');
@@ -124,7 +138,7 @@
 					}
 				});
 			}
-			function destroyUser() {
+			function destroyPosition() {
 				var ids = "";
 				var rows = $('#dg').datagrid('getSelections');
 				for ( var i = 0; i < rows.length; i++) {
@@ -134,7 +148,7 @@
 					ids = ids.substring(0, ids.length - 1);
 					$.messager.confirm('删除', '你确定要进行删除操作', function(r) {
 						if (r) {
-							$.post('login!delAccount', {
+							$.post('position!delPosition', {
 								id : ids
 							}, function(result) {
 								if (result.success) {
@@ -150,6 +164,34 @@
 						}
 					});
 				}
+			}
+			var format = function format(value, row, index) {
+				if (row.editing) {
+					return "<a href='' onclick='return saverow(this)'>保存</a>&nbsp;&nbsp;<a href='' onclick='return cancelrow(this)'>取消</a>";
+				} else {
+					return "<a href='' onclick='return editrow(this)'>编辑</a>";
+				}
+			}
+			function getRowIndex(target) {
+				var tr = $(target).closest('tr.datagrid-row');
+				return parseInt(tr.attr('datagrid-row-index'));
+			}
+			function editrow(target) {
+				$('#dg').datagrid('beginEdit', getRowIndex(target));
+				return false;
+			}
+			function saverow(target) {
+				$('#dg').datagrid('endEdit', getRowIndex(target));
+				return false;
+			}
+			function cancelrow(target) {
+				$('#dg').datagrid('cancelEdit', getRowIndex(target));
+				return false;
+			}
+			
+			function submitChange(){
+				var row=$("#dg").datagrid("getChanges");
+				$('#dg').datagrid('acceptChanges');
 			}
 		</script>
 	</div>
