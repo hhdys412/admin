@@ -9,6 +9,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 
 import com.hhdys.model.Account;
 import com.hhdys.service.AccountService;
+import com.hhdys.util.CookieUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Namespace("/admin")
@@ -33,8 +35,9 @@ public class LoginAction extends ActionSupport {
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		if (as.checkUser(userName, password)) {
-			Cookie cookie = new Cookie("username", userName);
-			response.addCookie(cookie);
+			CookieUtil cookie = CookieUtil.getInstance(request, response);
+			cookie.setCookie("username", userName, -1);
+			cookie.setCookie("password", Base64.encodeBase64String(password.getBytes()), -1);
 			return "index";
 		}
 		request.setAttribute("msg", "用户名或密码不对!");
@@ -42,15 +45,7 @@ public class LoginAction extends ActionSupport {
 	}
 
 	public String index() {
-		Cookie[] cookie = request.getCookies();
-		if (cookie != null) {
-			for (Cookie c : cookie) {
-				if (c.getName().equals("username") && c.getValue() != null && !c.getValue().equals("")) {
-					return "main";
-				}
-			}
-		}
-		return "loginout";
+		return "main";
 	}
 
 	public void showList() throws IOException {

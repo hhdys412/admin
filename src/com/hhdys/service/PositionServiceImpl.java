@@ -42,4 +42,16 @@ public class PositionServiceImpl implements PositionService {
 		criteria.andIdIn(list);
 		dao.deleteByExample(example);
 	}
+
+	@Override
+	public void UpdatePosition(Position position) {
+		PositionMapper dao=session.getMapper(PositionMapper.class);
+		dao.updateByPrimaryKey(position);
+	}
+
+	@Override
+	public void addPosition(Position position) {
+		PositionMapper dao=session.getMapper(PositionMapper.class);
+		dao.insert(position);
+	}
 }

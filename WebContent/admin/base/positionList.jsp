@@ -38,7 +38,7 @@
 </head>
 <body>
 	<div class="divpadding">
-		<table id="dg" class="easyui-datagrid" url="../position!getList"
+		<table id="dg" class="easyui-datagrid" url="position!getList"
 			toolbar="#toolbar" fitColumns="false" rownumbers="true"
 			data-options="onBeforeEdit:beforeEdit,onAfterEdit:afterEdit,onCancelEdit:cancelEdit">
 			<thead>
@@ -52,37 +52,24 @@
 			<a href="javascript:void(0)" class="easyui-linkbutton"
 				iconCls="icon-add" plain="true" onclick="newUser()">添加</a> <a
 				href="javascript:void(0)" class="easyui-linkbutton"
-				iconCls="icon-edit" plain="true" onclick="editUser()">编辑</a> <a
-				href="javascript:void(0)" class="easyui-linkbutton"
 				iconCls="icon-remove" plain="true" onclick="destroyPosition()">删除</a>
 		</div>
 
 		<div id="dlg" class="easyui-dialog" style="padding: 10px 20px"
 			closed="true" buttons="#dlg-buttons">
-			<div class="ftitle">User Information</div>
+			<div class="ftitle">添加职位信息</div>
 			<form id="fm" method="post" novalidate>
 				<div class="fitem">
-					<label>First Name:</label> <input name="firstname"
+					<label>职位名称:</label> <input name="name" id="name"
 						class="easyui-validatebox" required="true">
-				</div>
-				<div class="fitem">
-					<label>Last Name:</label> <input name="lastname"
-						class="easyui-validatebox" required="true">
-				</div>
-				<div class="fitem">
-					<label>Phone:</label> <input name="phone">
-				</div>
-				<div class="fitem">
-					<label>Email:</label> <input name="email"
-						class="easyui-validatebox" validType="email">
 				</div>
 			</form>
 		</div>
 		<div id="dlg-buttons">
 			<a href="javascript:void(0)" class="easyui-linkbutton"
-				iconCls="icon-ok" onclick="saveUser()">Save</a> <a
+				iconCls="icon-ok" onclick="saveUser()">保存</a> <a
 				href="javascript:void(0)" class="easyui-linkbutton"
-				iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">Cancel</a>
+				iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 		</div>
 		<script type="text/javascript">
 			var beforeEdit = function(index, row) {
@@ -106,30 +93,22 @@
 			}
 			var url;
 			function newUser() {
-				$('#dlg').dialog('open').dialog('setTitle', 'New User');
+				$('#dlg').dialog('open').dialog('setTitle', '添加职位');
 				$('#fm').form('clear');
 				url = 'save_user.php';
 			}
-			function editUser() {
-				var row = $('#dg').datagrid('getSelected');
-				if (row) {
-					$('#dlg').dialog('open').dialog('setTitle', 'Edit User');
-					$('#fm').form('load', row);
-					url = 'update_user.php?id=' + row.id;
-				}
-			}
 			function saveUser() {
 				$('#fm').form('submit', {
-					url : url,
+					url : "position!addPosition",
 					onSubmit : function() {
 						return $(this).form('validate');
 					},
-					success : function(result) {
-						var result = eval('(' + result + ')');
-						if (result.errorMsg) {
+					success : function(data) {
+						var result = eval('(' + data + ')');
+						if (result.success == false) {
 							$.messager.show({
 								title : 'Error',
-								msg : result.errorMsg
+								msg : result.msg
 							});
 						} else {
 							$('#dlg').dialog('close'); // close the dialog  
@@ -186,11 +165,26 @@
 			}
 			function cancelrow(target) {
 				$('#dg').datagrid('cancelEdit', getRowIndex(target));
+				submitChange();
 				return false;
 			}
-			
-			function submitChange(){
-				var row=$("#dg").datagrid("getChanges");
+
+			function submitChange() {
+				var row = $("#dg").datagrid("getChanges");
+				if (row.length > 0) {
+					$.ajax({
+						url : "position!updatePosition",
+						type : "post",
+						data : {
+							id : row[0].id,
+							position : row[0].name
+						},
+						dataType : "json",
+						success : function(data) {
+							alert(data.msg);
+						}
+					});
+				}
 				$('#dg').datagrid('acceptChanges');
 			}
 		</script>

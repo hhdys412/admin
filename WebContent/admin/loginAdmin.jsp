@@ -10,6 +10,9 @@
 <script type="text/javascript">
 	$(function() {
 		$("#userName").focus();
+		$("#loginDiv")
+				.css("top", ($(document).height() - $("#loginDiv").height()) / 2).css(
+						"left", ($(document).width() - $("#loginDiv").width()) / 2)
 	});
 	function checkInput() {
 		if ($.trim($("#userName").val()) == "") {
@@ -22,11 +25,15 @@
 		}
 	}
 </script>
+<style type="text/css">
+.login {
+	position: absolute;
+}
+</style>
 </head>
 <body>
 	<form action="login!login" method="post">
-		<div
-			style="position: absolute; left: 30%; top: 30%; margin-left: -175; margin-top: -150;">
+		<div class="login" id="loginDiv">
 			<table width="400px" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="2" align="center" style="font-size: x-large;">登录</td>

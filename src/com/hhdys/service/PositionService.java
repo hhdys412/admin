@@ -8,4 +8,8 @@ public interface PositionService {
 	public List<Position> getList();
 	
 	public void delPositionById(String ids);
+	
+	public void UpdatePosition(Position position);
+	
+	public void addPosition(Position position);
 }
