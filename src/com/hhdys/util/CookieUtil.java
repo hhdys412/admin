@@ -71,6 +71,15 @@ public class CookieUtil {
 
 		response.addCookie(cookie);
 	}
+	
+	public void setCookie(String name, String value, int age,boolean httponly) {
+
+		Cookie cookie = new Cookie(name, value);
+		cookie.setPath("/");
+		cookie.setMaxAge(age);
+		cookie.setHttpOnly(true);
+		response.addCookie(cookie);
+	}
 
 	public void setCookieSafe(String name, String value, int age) {
 

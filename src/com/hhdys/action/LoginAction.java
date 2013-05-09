@@ -37,7 +37,7 @@ public class LoginAction extends ActionSupport {
 		if (as.checkUser(userName, password)) {
 			CookieUtil cookie = CookieUtil.getInstance(request, response);
 			cookie.setCookie("username", userName, -1);
-			cookie.setCookie("password", Base64.encodeBase64String(password.getBytes()), -1);
+			cookie.setCookie("password", Base64.encodeBase64String(password.getBytes()), -1, true);
 			return "index";
 		}
 		request.setAttribute("msg", "用户名或密码不对!");

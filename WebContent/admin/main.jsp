@@ -23,28 +23,35 @@
 		</div>
 	</div>
 	<div region="west" split="true" title="菜单栏" style="width: 150px;">
-		<a href="#" class="easyui-linkbutton"
-			onclick="addTab('部门管理','base/departmentList.jsp')">部门管理</a> <a href="#"
-			class="easyui-linkbutton"
-			onclick="addTab('用户管理','base/accountList.jsp')">用户管理</a> <a
-			href="#" class="easyui-linkbutton"
-			onclick="addTab('职位管理','base/positionList.jsp')">职位管理</a>
+		<div style="padding: 10px 10px 10px 10px;">
+			<ul class="easyui-tree" id="menuTree"
+				data-options="url:'menutree!getList',animate:true,lines:true"></ul>
+		</div>
 	</div>
 	<div id="content" region="center" class="easyui-tabs"></div>
 	<script type="text/javascript">
+		$(function() {
+			$('#menuTree').tree({
+				onClick : function(node) {
+					if ($.trim(node.attributes.url) != "") {
+						addTab(node.text, node.attributes.url);
+					}
+				}
+			});
+		});
 		function addTab(title, url) {
 			if ($('#content').tabs('exists', title)) {
 				$('#content').tabs('select', title);
 			} else {
-				/**
+				
 				var content = '<iframe scrolling="no" frameborder="0"  src="'
 						+ url
 						+ '" style="width:1000px;height:600px;margin: 5px 5px 5px 5px;"></iframe>';
-						*/
+				 
 				$('#content').tabs('add', {
 					title : title,
-					//content : content,
-					href:url,
+					content : content,
+					//href : url,
 					closable : true
 				});
 			}
