@@ -37,7 +37,7 @@
 </style>
 </head>
 <body>
-	<table id="dg" class="easyui-datagrid" url="../login!showList"
+	<table id="dg" class="easyui-datagrid" url="../account!showList"
 		toolbar="#toolbar" pagination="true" fitColumns="true"
 		rownumbers="true">
 		<thead>
@@ -54,51 +54,81 @@
 	</table>
 	<div id="toolbar">
 		<a href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-add" plain="true" onclick="newUser()">添加</a> <a
+			iconCls="icon-add" plain="true" onClick="newUser()">添加</a> <a
 			href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-edit" plain="true" onclick="editUser()">编辑</a> <a
+			iconCls="icon-edit" plain="true" onClick="editUser()">编辑</a> <a
 			href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-remove" plain="true" onclick="destroyUser()">删除</a>
+			iconCls="icon-remove" plain="true" onClick="destroyUser()">删除</a>
 	</div>
 
-	<div id="dlg" class="easyui-dialog" style="padding: 10px 20px"
-		closed="true" buttons="#dlg-buttons">
-		<div class="ftitle">User Information</div>
-		<form id="fm" method="post" novalidate>
+	<div id="dlg" class="easyui-dialog"
+		style="padding: 10px 20px; width: 400px;" closed="true"
+		buttons="#dlg-buttons">
+		<div class="ftitle">添加用户</div>
+		<form id="fm" method="post">
 			<div class="fitem">
-				<label>First Name:</label> <input name="firstname"
+				<label>用户名:</label> <input name="username" id="username"
 					class="easyui-validatebox" required="true">
 			</div>
 			<div class="fitem">
-				<label>Last Name:</label> <input name="lastname"
-					class="easyui-validatebox" required="true">
+				<label>密&nbsp;&nbsp;码:</label> <input name="password" id="password"
+					type="password" class="easyui-validatebox" required="true">
 			</div>
 			<div class="fitem">
-				<label>Phone:</label> <input name="phone">
+				<label>姓&nbsp;&nbsp;名:</label> <input name="name" id="name"
+					required="true" class="easyui-validatebox">
 			</div>
 			<div class="fitem">
-				<label>Email:</label> <input name="email" class="easyui-validatebox"
-					validType="email">
+				<label>性&nbsp;&nbsp;别:</label> <input type="radio" name="sex"
+					id="sexMan" value="0">男 <input type="radio" name="sex"
+					id="sexWoman" value="1">女
+			</div>
+			<div class="fitem">
+				<label>年&nbsp;&nbsp;龄:</label> <input name="age" id="age">
+			</div>
+			<div class="fitem">
+				<label>角&nbsp;&nbsp;色:</label> <select id="role" name="role">
+					<option value="-1">--请选择--</option>
+				</select>
+			</div>
+			<div class="fitem">
+				<label>职&nbsp;&nbsp;位:</label> <select id="position" name="position">
+					<option value="-1">--请选择--</option>
+				</select>
+			</div>
+			<div class="fitem">
+				<label>部&nbsp;&nbsp;门:</label> <select id="department"
+					class="easyui-combotree" style="width: 200px;"
+					data-options="url:'../department!getDepartmentTree'"
+					name="department">
+					<option value="-1">--请选择--</option>
+				</select>
 			</div>
 		</form>
 	</div>
 	<div id="dlg-buttons">
 		<a href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-ok" onclick="saveUser()">Save</a> <a
+			iconCls="icon-ok" onClick="saveUser()">保存</a> <a
 			href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">Cancel</a>
+			iconCls="icon-cancel" onClick="javascript:$('#dlg').dialog('close')">取消</a>
 	</div>
 	<script type="text/javascript">
-		var url;
+		$(function() {
+			getRoleList();
+			getPositionList();
+		})
 		function newUser() {
-			$('#dlg').dialog('open').dialog('setTitle', 'New User');
+			$('#dlg').dialog('open').dialog('setTitle', '添加用户');
 			$('#fm').form('clear');
-			url = 'save_user.php';
+			$("#sexMan").attr("checked", "true");
+			$("#role option:first").attr("selected", "selected");
+			$("#position option:first").attr("selected", "selected");
+			$("#department option:first").attr("selected", "selected");
 		}
 		function editUser() {
 			var row = $('#dg').datagrid('getSelected');
 			if (row) {
-				$('#dlg').dialog('open').dialog('setTitle', 'Edit User');
+				$('#dlg').dialog('open').dialog('setTitle', '修改用户');
 				$('#fm').form('load', row);
 				url = 'update_user.php?id=' + row.id;
 			}
@@ -133,7 +163,7 @@
 				ids = ids.substring(0, ids.length - 1);
 				$.messager.confirm('删除', '你确定要进行删除操作', function(r) {
 					if (r) {
-						$.post('../login!delAccount', {
+						$.post('../account!delAccount', {
 							id : ids
 						}, function(result) {
 							if (result.success) {
@@ -149,6 +179,45 @@
 					}
 				});
 			}
+		}
+		function getRoleList() {
+			$.ajax({
+				url : "../account!getRoleList",
+				type : "post",
+				data : {
+
+				},
+				dataType : "json",
+				success : function(data) {
+					$("#role").html(
+							"<option value='-1' selected>--请选择--</option>");
+					for ( var i = 0; i < data.length; i++) {
+						$("#role").append(
+								"<option value='"+data[i].id+"'>"
+										+ data[i].name + "</option>");
+					}
+				}
+			});
+		}
+
+		function getPositionList() {
+			$.ajax({
+				url : "../account!getPositionList",
+				type : "post",
+				data : {
+
+				},
+				dataType : "json",
+				success : function(data) {
+					$("#position").html(
+							"<option value='-1' selected>--请选择--</option>");
+					for ( var i = 0; i < data.length; i++) {
+						$("#position").append(
+								"<option value='"+data[i].id+"'>"
+										+ data[i].name + "</option>");
+					}
+				}
+			});
 		}
 	</script>
 </body>

@@ -76,7 +76,7 @@ public class AccountServiceImpl implements AccountService {
 	public boolean delAccount(String ids) {
 		try {
 			String[] id = ids.split(",");
-			List<Integer> list = new ArrayList<>();
+			List<Integer> list = new ArrayList<Integer>();
 			for (int i = 0; i < id.length; i++) {
 				list.add(Integer.parseInt(id[i]));
 			}

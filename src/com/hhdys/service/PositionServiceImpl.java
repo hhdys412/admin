@@ -32,7 +32,7 @@ public class PositionServiceImpl implements PositionService {
 	@Override
 	public void delPositionById(String ids) {
 		String[] id = ids.split(",");
-		List<Integer> list = new ArrayList<>();
+		List<Integer> list = new ArrayList<Integer>();
 		for (int i = 0; i < id.length; i++) {
 			list.add(Integer.parseInt(id[i]));
 		}
