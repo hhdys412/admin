@@ -13,7 +13,7 @@
 <link rel="stylesheet" type="text/css" href="../css/easyui/icon.css">
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
-<body class="easyui-layout" fit="true">
+<body class="easyui-layout">
 	<div region="north" style="height: 100px; text-align: center;">
 		<div>
 			<h3>后台管理系统</h3>
@@ -28,7 +28,9 @@
 				data-options="url:'menutree!getList',animate:true,lines:true"></ul>
 		</div>
 	</div>
-	<div id="content" region="center" class="easyui-tabs"></div>
+	<div region="center">
+		<div id="content" class="easyui-tabs" fit="true"></div>
+	</div>
 	<script type="text/javascript">
 		$(function() {
 			$('#menuTree').tree({
@@ -43,11 +45,11 @@
 			if ($('#content').tabs('exists', title)) {
 				$('#content').tabs('select', title);
 			} else {
-				
+
 				var content = '<iframe scrolling="no" frameborder="0"  src="'
 						+ url
-						+ '" style="width:1000px;height:600px;margin: 5px 5px 5px 5px;"></iframe>';
-				 
+						+ '" style="width:1000px;height:600px;margin: 5px 5px 5px 5px;" fit="true"></iframe>';
+
 				$('#content').tabs('add', {
 					title : title,
 					content : content,

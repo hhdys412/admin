@@ -10,9 +10,9 @@
 <script type="text/javascript">
 	$(function() {
 		$("#userName").focus();
-		$("#loginDiv")
-				.css("top", ($(document).height() - $("#loginDiv").height()) / 2).css(
-						"left", ($(document).width() - $("#loginDiv").width()) / 2)
+		$("#loginDiv").css("top",
+				($(document).height() - $("#loginDiv").height()) / 2).css(
+				"left", ($(document).width() - $("#loginDiv").width()) / 2);
 	});
 	function checkInput() {
 		if ($.trim($("#userName").val()) == "") {
