@@ -39,13 +39,14 @@
 <body>
 	<table id="dg" class="easyui-datagrid" url="../account!showList"
 		toolbar="#toolbar" pagination="true" fitColumns="true"
-		rownumbers="true">
+		singleSelect="true" rownumbers="true">
 		<thead>
 			<tr>
 				<th field="username" width="80">用户名</th>
 				<th field="name" width="80">姓名</th>
-				<th field="sex" width="80">性别</th>
+				<th field="sex" width="80" formatter="formatSex">性别</th>
 				<th field="age" width="80">年龄</th>
+				<th field="department" width="80">部门</th>
 				<th field="position" width="80">职位</th>
 				<th field="role" width="80">角色</th>
 				<th field="lastLoginTime">上次登录时间</th>
@@ -64,7 +65,6 @@
 	<div id="dlg" class="easyui-dialog"
 		style="padding: 10px 20px; width: 400px;" closed="true"
 		buttons="#dlg-buttons">
-		<div class="ftitle">添加用户</div>
 		<form id="fm" method="post">
 			<div class="fitem">
 				<label>用户名:</label> <input name="username" id="username"
@@ -104,11 +104,12 @@
 					<option value="-1">--请选择--</option>
 				</select>
 			</div>
+			<input type="hidden" id="hidCheck" name="hidCheck" value="1" />
 		</form>
 	</div>
 	<div id="dlg-buttons">
 		<a href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-ok" onClick="saveUser()">保存</a> <a
+			iconCls="icon-ok" onClick="saveUser()" id="saveBtn">保存</a> <a
 			href="javascript:void(0)" class="easyui-linkbutton"
 			iconCls="icon-cancel" onClick="javascript:$('#dlg').dialog('close')">取消</a>
 	</div>
@@ -116,26 +117,73 @@
 		$(function() {
 			getRoleList();
 			getPositionList();
-		})
+			$("#username").blur(function() {
+				$.ajax({
+					url : "../account!checkUserName",
+					type : "post",
+					data : {
+						userName : $(this).val()
+					},
+					dataType : "text",
+					success : function(data) {
+						if (data == "false") {
+						//	alert("用户名已存在！");
+							$("#hidCheck").val("0");
+						}else{
+							$("#hidCheck").val("1");
+						}
+					}
+				});
+			});
+		});
 		function newUser() {
 			$('#dlg').dialog('open').dialog('setTitle', '添加用户');
 			$('#fm').form('clear');
 			$("#sexMan").attr("checked", "true");
 			$("#role option:first").attr("selected", "selected");
 			$("#position option:first").attr("selected", "selected");
-			$("#department option:first").attr("selected", "selected");
+			$('#department').combotree('setValue', "--请选择--");
+			$("#saveBtn").attr("onClick", "saveUser()");
+			$("#username").show();
+			$("#spanUserName").remove();
 		}
 		function editUser() {
 			var row = $('#dg').datagrid('getSelected');
 			if (row) {
 				$('#dlg').dialog('open').dialog('setTitle', '修改用户');
 				$('#fm').form('load', row);
-				url = 'update_user.php?id=' + row.id;
+				$("#role option").each(function(index, element) {
+					if ($(this).text() == row.role) {
+						$(this).attr("selected", "selected");
+					}
+				});
+				$("#position option").each(function(index, element) {
+					if ($(this).text() == row.position) {
+						$(this).attr("selected", "selected");
+					}
+				});
+				$("#username").hide();
+				$("#spanUserName").remove();
+				$("#username").after("<span id='spanUserName'>"+$("#username").val()+"</span>");
+				$('#department').combotree('setValue', row.department_id);
+				$("#saveBtn").attr("onClick", "submitChange(" + row.id + ")");
 			}
 		}
-		function saveUser() {
+		function submitChange(id) {
+			if ($("#role").val() < 0) {
+				alert("请选择角色！");
+				return false;
+			}
+			if ($("#position").val() < 0) {
+				alert("请选择职位！");
+				return false;
+			}
+			if ($('#department').combotree('getValue') == "--请选择--") {
+				alert("请选择部门！");
+				return false;
+			}
 			$('#fm').form('submit', {
-				url : url,
+				url : "../account!editAccount?id=" + id,
 				onSubmit : function() {
 					return $(this).form('validate');
 				},
@@ -147,6 +195,44 @@
 							msg : result.errorMsg
 						});
 					} else {
+						alert(result.msg);
+						$('#dlg').dialog('close'); // close the dialog  
+						$('#dg').datagrid('reload'); // reload the user data  
+					}
+				}
+			});
+		}
+		function saveUser() {
+			if ($("#hidCheck").val() == "0") {
+				alert("用户名已存在！");
+				return false;
+			}
+			if ($("#role").val() < 0) {
+				alert("请选择角色！");
+				return false;
+			}
+			if ($("#position").val() < 0) {
+				alert("请选择职位！");
+				return false;
+			}
+			if ($('#department').combotree('getValue') == "--请选择--") {
+				alert("请选择部门！");
+				return false;
+			}
+			$('#fm').form('submit', {
+				url : "../account!addAccount",
+				onSubmit : function() {
+					return $(this).form('validate');
+				},
+				success : function(result) {
+					var result = eval('(' + result + ')');
+					if (result.errorMsg) {
+						$.messager.show({
+							title : 'Error',
+							msg : result.errorMsg
+						});
+					} else {
+						alert(result.msg);
 						$('#dlg').dialog('close'); // close the dialog  
 						$('#dg').datagrid('reload'); // reload the user data  
 					}
@@ -218,6 +304,13 @@
 					}
 				}
 			});
+		}
+
+		var formatSex = function(value, row, index) {
+			if (value == 0) {
+				return "男";
+			}
+			return "女";
 		}
 	</script>
 </body>

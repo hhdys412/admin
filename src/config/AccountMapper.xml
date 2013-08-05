@@ -361,16 +361,16 @@
       position = #{position,jdbcType=NUMERIC}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="select_page" resultMap="BaseResultMap"
+  <select id="select_page" resultType="java.util.Map"
 		parameterType="java.util.Map">
-		select * from account where 1=1
+		select * from v_account where 1=1
 		<if test="condition!=''">
 			${condition}
 		</if>
 		order by id desc limit ${curpage},${pagesize}
 	</select>
 	<select id="select_page_count" resultType="int" parameterType="string">
-		select count(id) from account where 1=1
+		select count(id) from v_account where 1=1
 		<if test="value!=''">
 			${value}
 		</if>

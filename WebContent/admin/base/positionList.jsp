@@ -54,7 +54,7 @@
 			iconCls="icon-remove" plain="true" onclick="destroyPosition()">删除</a>
 	</div>
 
-	<div id="dlg" class="easyui-dialog" style="padding: 10px 20px"
+	<div id="dlg" class="easyui-dialog" style="padding: 10px 20px;width:400px;"
 		closed="true" buttons="#dlg-buttons">
 		<div class="ftitle">添加职位信息</div>
 		<form id="fm" method="post" novalidate>

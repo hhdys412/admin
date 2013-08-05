@@ -15,6 +15,7 @@ import com.hhdys.model.AccountExample;
 
 public class AccountServiceImpl implements AccountService {
 	private SqlSession session;
+
 	@Override
 	public boolean addUser(Account account) {
 		try {
@@ -23,11 +24,9 @@ public class AccountServiceImpl implements AccountService {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return false;
 	}
-
-	
 
 	@Override
 	public boolean checkUser(String userName, String password) {
@@ -47,17 +46,17 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public List<Account> getUserList(String condition, int pageSize, int curPage) {
+	public List<Map<String, String>> getUserList(String condition, int pageSize, int curPage) {
 		try {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("condition", condition);
 			map.put("curpage", String.valueOf((curPage - 1) * pageSize));
 			map.put("pagesize", String.valueOf(pageSize));
-			List<Account> list = session.selectList("com.hhdys.dao.AccountMapper.select_page", map);
+			List<Map<String, String>> list = session.selectList("com.hhdys.dao.AccountMapper.select_page", map);
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return null;
 	}
 
@@ -88,17 +87,40 @@ public class AccountServiceImpl implements AccountService {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return false;
 	}
-
-
 
 	public SqlSession getSession() {
 		return session;
 	}
-	@Resource(name="sqlSession")
+
+	@Resource(name = "sqlSession")
 	public void setSession(SqlSession session) {
 		this.session = session;
+	}
+
+	@Override
+	public boolean editUser(Account account) {
+		try {
+			AccountMapper dao = session.getMapper(AccountMapper.class);
+			dao.updateByPrimaryKeySelective(account);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean checkUserName(String userName) {
+		AccountMapper dao = session.getMapper(AccountMapper.class);
+		AccountExample example = new AccountExample();
+		AccountExample.Criteria criteria = example.createCriteria();
+		criteria.andUsernameEqualTo(userName);
+		if (dao.selectByExample(example).size() > 0) {
+			return true;
+		}
+		return false;
 	}
 }
