@@ -33,7 +33,7 @@ public class MenuTreeServiceImpl implements MenuTreeService {
 				continue;
 			}
 			stringBuilder.append("{\"id\":" + menuTree.getId() + ",\"text\":\"" + menuTree.getName()
-					+ "\",\"attributes\":{\"url\":\"" + menuTree.getUrl() + "\"}");
+					+ "\",\"attributes\":{\"url\":\"" + menuTree.getUrl() + "\",\"newW\":"+menuTree.getNewWindows()+"}");
 			String str = null;
 			if ((str = getList(list, menuTree.getId())) != null) {
 				stringBuilder.append(",\"children\":[" + str + "]");

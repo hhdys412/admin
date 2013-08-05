@@ -36,7 +36,11 @@
 			$('#menuTree').tree({
 				onClick : function(node) {
 					if ($.trim(node.attributes.url) != "") {
+						if(node.attributes.newW==0){
 						addTab(node.text, node.attributes.url);
+						}else{
+							window.open(node.attributes.url);
+						}
 					}
 				}
 			});
