@@ -28,17 +28,17 @@
 				data-options="url:'menutree!getList',animate:true,lines:true"></ul>
 		</div>
 	</div>
-	<div region="center">
-		<div id="content" class="easyui-tabs" fit="true"></div>
+	<div region="center" fit="true">
+		<div id="content" class="easyui-tabs"></div>
 	</div>
 	<script type="text/javascript">
 		$(function() {
 			$('#menuTree').tree({
 				onClick : function(node) {
 					if ($.trim(node.attributes.url) != "") {
-						if(node.attributes.newW==0){
-						addTab(node.text, node.attributes.url);
-						}else{
+						if (node.attributes.newW == 0) {
+							addTab(node.text, node.attributes.url);
+						} else {
 							window.open(node.attributes.url);
 						}
 					}
@@ -50,9 +50,9 @@
 				$('#content').tabs('select', title);
 			} else {
 
-				var content = '<iframe scrolling="no" frameborder="0"  src="'
+				var content = '<iframe frameborder="0"  src="'
 						+ url
-						+ '" style="width:1000px;height:600px;margin: 5px 5px 5px 5px;" fit="true"></iframe>';
+						+ '" style="width:99%;min-height:670px;margin: 5px 5px 5px 5px;overflow-y: scroll;" ></iframe>';
 
 				$('#content').tabs('add', {
 					title : title,

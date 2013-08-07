@@ -219,7 +219,7 @@
       <if test="record.url != null">
         url = #{record.url,jdbcType=VARCHAR},
       </if>
-      <if test="record.parentId != null">
+      <if test="record.parentId != null and record.parentId!=0">
         parent_id = #{record.parentId,jdbcType=NUMERIC},
       </if>
       <if test="record.isShow != null">
@@ -264,7 +264,7 @@
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
       </if>
-      <if test="parentId != null">
+      <if test="parentId != null and parentId!=0">
         parent_id = #{parentId,jdbcType=NUMERIC},
       </if>
       <if test="isShow != null">

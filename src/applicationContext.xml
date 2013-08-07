@@ -32,4 +32,5 @@
 	<bean name="position" class="com.hhdys.service.PositionServiceImpl"></bean>
 	<bean name="role" class="com.hhdys.service.RoleServiceImpl"></bean>
 	<bean name="menutree" class="com.hhdys.service.MenuTreeServiceImpl"></bean>
+	<bean name="pagefunc" class="com.hhdys.service.PageFuncServiceImpl"></bean>
 </beans>

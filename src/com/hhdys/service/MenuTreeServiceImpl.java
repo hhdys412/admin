@@ -17,13 +17,15 @@ public class MenuTreeServiceImpl implements MenuTreeService {
 	private SqlSession session;
 
 	@Override
-	public String getList(List<Integer> list, int parentId) {
+	public String getList(List<Integer> list, int parentId, int flag) {
 		MenuTreeMapper dao = session.getMapper(MenuTreeMapper.class);
 		MenuTreeExample example = new MenuTreeExample();
 		MenuTreeExample.Criteria criteria = example.createCriteria();
 		// criteria.andIdIn(list);
 		criteria.andParentIdEqualTo(parentId);
-		criteria.andIsShowEqualTo(0);
+		if (flag == 0) {
+			criteria.andIsShowEqualTo(0);
+		}
 		List<MenuTree> reusltList = dao.selectByExample(example);
 		StringBuilder stringBuilder = new StringBuilder();
 		Iterator<MenuTree> iter = reusltList.iterator();
@@ -33,9 +35,10 @@ public class MenuTreeServiceImpl implements MenuTreeService {
 				continue;
 			}
 			stringBuilder.append("{\"id\":" + menuTree.getId() + ",\"text\":\"" + menuTree.getName()
-					+ "\",\"attributes\":{\"url\":\"" + menuTree.getUrl() + "\",\"newW\":"+menuTree.getNewWindows()+"}");
+					+ "\",\"attributes\":{\"url\":\"" + menuTree.getUrl() + "\",\"newW\":" + menuTree.getNewWindows()
+					+ "}");
 			String str = null;
-			if ((str = getList(list, menuTree.getId())) != null) {
+			if ((str = getList(list, menuTree.getId(), flag)) != null) {
 				stringBuilder.append(",\"children\":[" + str + "]");
 			}
 			stringBuilder.append("},");
@@ -55,6 +58,24 @@ public class MenuTreeServiceImpl implements MenuTreeService {
 
 	public void setSession(SqlSession session) {
 		this.session = session;
+	}
+
+	@Override
+	public void addMenu(MenuTree tree) {
+		MenuTreeMapper dao = session.getMapper(MenuTreeMapper.class);
+		dao.insert(tree);
+	}
+
+	@Override
+	public void delMenu(int id) {
+		MenuTreeMapper dao = session.getMapper(MenuTreeMapper.class);
+		dao.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public void updateMenu(MenuTree tree) {
+		MenuTreeMapper dao = session.getMapper(MenuTreeMapper.class);
+		dao.updateByPrimaryKeySelective(tree);
 	}
 
 }

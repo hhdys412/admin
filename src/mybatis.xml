@@ -9,5 +9,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="config/PositionMapper.xml" />
 		<mapper resource="config/RoleMapper.xml" />
 		<mapper resource="config/MenuTreeMapper.xml" />
+		<mapper resource="config/PageFuncMapper.xml" />
 	</mappers>
 </configuration>
