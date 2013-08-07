@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>部门列表</title>
+<title>功能树列表</title>
 <script type="text/javascript" src="../../js/jquery.js"></script>
 <script type="text/javascript" src="../../js/jquery.easyui.js"></script>
 <script type="text/javascript" src="../../js/easyui-lang-zh_CN.js"></script>

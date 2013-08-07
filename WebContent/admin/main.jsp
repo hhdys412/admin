@@ -22,7 +22,7 @@
 			${cookie.username.value }，<a href="loginout.jsp">登出</a>
 		</div>
 	</div>
-	<div region="west" split="true" title="菜单栏" style="width: 150px;">
+	<div region="west" split="true" title="菜单栏" style="width: 200px;">
 		<div style="padding: 10px 10px 10px 10px;">
 			<ul class="easyui-tree" id="menuTree"
 				data-options="url:'menutree!getList',animate:true,lines:true"></ul>

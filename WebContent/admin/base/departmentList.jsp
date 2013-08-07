@@ -40,7 +40,8 @@
 							<td colspan="2" align="center"><input type="button"
 								value="删除该部门" id="btnDel" name="btnDel" /><input type="button"
 								value="修改该部门" id="btnUpdate" name="btnUpdate" /><input
-								type="button" value="添加子部门" id="btnAdd" name="btnAdd" /></td>
+								type="button" value="添加子部门" id="btnAdd" name="btnAdd" /><input
+								type="button" value="设置角色" id="btnRole" name="btnRole" /></td>
 						</tr>
 					</table>
 					<input type="hidden" id="hidId" name="hidId" />
@@ -48,6 +49,21 @@
 			</div>
 		</div>
 	</div>
+	
+	<div id="dlg" class="easyui-dialog" title="设置角色" style="width:600px;height:400px;padding:10px;"
+            data-options="closed:true,
+                buttons: [{
+                    text:'保存',
+                    iconCls:'icon-ok',
+                    handler:dlgSave
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:dlgCancel
+                }]
+            ">
+        <div id="divCBox"></div>
+    </div>
 	<script type="text/javascript">
 		$(function() {
 			$('#ulTree').tree({
@@ -86,13 +102,9 @@
 					});
 				}
 			});
-			$("#btnUpdate")
-					.click(
-							function() {
+			$("#btnUpdate").click(function() {
 								if (confirm("你确定要进行修改？")) {
-									$("#form1")
-											.form(
-													"submit",
+									$("#form1").form("submit",
 													{
 														url : "../department!updateDepartment",
 														onSubmit : function() {
@@ -113,11 +125,24 @@
 															$("#ulTree").tree(
 																	"reload");
 														}
-													});
-								}
+													});}
 							});
+			$("#btnRole").click(function(){
+				$('#dlg').dialog('open');
+			});
 
 		})
+		var dlgSave=function(){
+			 alert('ok');
+			 $('#dlg').dialog('close');
+		}
+		var dlgCancel=function(){
+			$('#dlg').dialog('close');
+		}
+		
+		function getRoleList(){
+			
+		}
 	</script>
 </body>
 </html>

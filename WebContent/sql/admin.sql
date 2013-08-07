@@ -200,3 +200,17 @@ SET character_set_client = @saved_cs_client;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2013-08-05 17:29:37
+
+CREATE  TABLE IF NOT EXISTS `page_func` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `page_id` INT NULL ,
+  `func` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `page_id` (`page_id` ASC) )
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE  TABLE IF NOT EXISTS `depart_role_ass` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `department_id` INT NULL ,
+  `role_id` INT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
