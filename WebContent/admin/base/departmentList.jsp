@@ -50,7 +50,7 @@
 		</div>
 	</div>
 	
-	<div id="dlg" class="easyui-dialog" title="设置角色" style="width:600px;height:400px;padding:10px;"
+	<div id="dlg" class="easyui-dialog" title="设置角色" style="width:600px;height:400px;"
             data-options="closed:true,
                 buttons: [{
                     text:'保存',
@@ -60,9 +60,14 @@
                     text:'取消',
                     iconCls:'icon-cancel',
                     handler:dlgCancel
-                }]
+                }],
+                onOpen:dlgOpen
             ">
-        <div id="divCBox"></div>
+            <form id="roleForm" method="post">
+        <div id="divCBox" style="margin: 10px 10px 10px 10px;">
+        
+        </div>
+        </form>
     </div>
 	<script type="text/javascript">
 		$(function() {
@@ -108,40 +113,96 @@
 													{
 														url : "../department!updateDepartment",
 														onSubmit : function() {
-															if ($
-																	.trim($(
-																			"#selDepart")
-																			.val()) == ""
-																	|| $
-																			.trim($(
-																					"#hidId")
-																					.val()) == "") {
+															if ($.trim($("#selDepart").val()) == ""|| $.trim($("#hidId").val()) == "") {
 																alert("请选择要修改的部门！");
 																return false;
 															}
 														},
 														success : function(data) {
 															alert(data);
-															$("#ulTree").tree(
-																	"reload");
+															$("#ulTree").tree("reload");
 														}
 													});}
 							});
 			$("#btnRole").click(function(){
+				if($.trim($("#hidId").val())==""){
+					alert("请先选择要设置的部门！");
+					return false;
+				}
 				$('#dlg').dialog('open');
 			});
-
+			getRoleList();
 		})
 		var dlgSave=function(){
-			 alert('ok');
+			var selected="";
+			$(":checked[name='cbRole']").each(function(index,element){
+				selected+=$(this).val()+",";
+			})
+			if(selected!=""){
+				selected=selected.substring(0,selected.length-1);
+			}else{
+				alert("请选择一个角色！");
+				return false;
+			}
+			 $.ajax({
+				 url:"../departroleass!addAss",
+				 type:"post",
+				 data:{
+					 roleid:selected,
+					 departmentid:$("#hidId").val()
+				 },
+				 dataType:"text",
+				 success:function(data){
+					 if(data=="success"){
+						 alert("添加成功！");
+					 }
+				 }
+			 });
 			 $('#dlg').dialog('close');
+			 $(":checkbox[name='cbRole']").attr("checked",false);
 		}
 		var dlgCancel=function(){
 			$('#dlg').dialog('close');
+			$(":checkbox[name='cbRole']").attr("checked",false);
 		}
 		
 		function getRoleList(){
-			
+			$.ajax({
+				url:"../role!getList",
+				type:"post",
+				data:{},
+				dataType:"json",
+				success:function(data){
+					var list=data.rows;
+					for(var row in list){
+						$("#divCBox").append("<input style='margin-left:10px;' type=\"checkbox\" name=\"cbRole\" value='"+list[row].id+"'>"+list[row].name);
+					}
+				}
+			});
+		}
+		
+		var dlgOpen=function(){
+			$.ajax({
+				url:"../departroleass!selectAss",
+				type:"post",
+				data:{
+					departmentid:$("#hidId").val()
+				},
+				dataType:"json",
+				success:function(data){
+					var list=data.assList;
+					for(var i in list){
+						$(":checkbox[name='cbRole']").each(function(index,element){
+							if($(this).val()==list[i].roleId){
+								$(this).attr("checked",true);
+							}
+						});
+					}
+				},
+				error:function(a,b,c){
+					alert(b);
+				}
+			});
 		}
 	</script>
 </body>

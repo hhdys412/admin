@@ -38,7 +38,7 @@
 </head>
 <body>
 	<table id="dg" class="easyui-datagrid" url="../position!getList"
-		toolbar="#toolbar" fitColumns="false" rownumbers="true"
+		toolbar="#toolbar" fitColumns="false" rownumbers="true" singleSelect="true"
 		data-options="onBeforeEdit:beforeEdit,onAfterEdit:afterEdit,onCancelEdit:cancelEdit">
 		<thead>
 			<tr>
