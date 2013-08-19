@@ -38,7 +38,8 @@
 </head>
 <body>
 	<table id="dg" class="easyui-datagrid" url="../position!getList"
-		toolbar="#toolbar" fitColumns="false" rownumbers="true" singleSelect="true"
+		toolbar="#toolbar" fitColumns="false" rownumbers="true"
+		singleSelect="true"
 		data-options="onBeforeEdit:beforeEdit,onAfterEdit:afterEdit,onCancelEdit:cancelEdit">
 		<thead>
 			<tr>
@@ -52,10 +53,13 @@
 			iconCls="icon-add" plain="true" onclick="newPosition()">添加</a> <a
 			href="javascript:void(0)" class="easyui-linkbutton"
 			iconCls="icon-remove" plain="true" onclick="destroyPosition()">删除</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton"
+			iconCls="icon-save" onclick="openSetRole()" plain="true">设置角色</a>
 	</div>
 
-	<div id="dlg" class="easyui-dialog" style="padding: 10px 20px;width:400px;"
-		closed="true" buttons="#dlg-buttons">
+	<div id="dlg" class="easyui-dialog"
+		style="padding: 10px 20px; width: 400px;" closed="true"
+		buttons="#dlg-buttons">
 		<div class="ftitle">添加职位信息</div>
 		<form id="fm" method="post" novalidate>
 			<div class="fitem">
@@ -70,6 +74,27 @@
 			href="javascript:void(0)" class="easyui-linkbutton"
 			iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 	</div>
+	<!-- 设置角色 -->
+	<div id="dlgRole" class="easyui-dialog" title="设置角色"
+		style="width: 600px; height: 400px;"
+		data-options="closed:true,
+                buttons: [{
+                    text:'保存',
+                    iconCls:'icon-ok',
+                    handler:dlgSave
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:dlgCancel
+                }],
+                onOpen:dlgOpen
+            ">
+		<form id="roleForm" method="post">
+			<div id="divCBox" style="margin: 10px 10px 10px 10px;"></div>
+			<input type="hidden" id="hidPositionId" name="hidPositionId" />
+		</form>
+	</div>
+
 	<script type="text/javascript">
 		var beforeEdit = function(index, row) {
 			row.editing = true;
@@ -184,6 +209,94 @@
 			}
 			$('#dg').datagrid('acceptChanges');
 		}
+
+		function openSetRole() {
+			var row = $("#dg").datagrid("getSelected");
+			if (row != null) {
+				$("#hidPositionId").val(row.id);
+				$('#dlgRole').dialog('open');
+			} else {
+				alert("请选择一个职位！");
+				return false;
+			}
+		}
+
+		var dlgSave = function() {
+			var selected = "";
+			$(":checked[name='cbRole']").each(function(index, element) {
+				selected += $(this).val() + ",";
+			})
+			if (selected != "") {
+				selected = selected.substring(0, selected.length - 1);
+			} else {
+				alert("请选择一个角色！");
+				return false;
+			}
+			$.ajax({
+				url : "../positionrole!addAss",
+				type : "post",
+				data : {
+					roleId : selected,
+					hidPositionId : $("#hidPositionId").val()
+				},
+				dataType : "json",
+				success : function(data) {
+					if(data.result=="success"){
+						alert(data.msg)
+					}
+				}
+			});
+			$('#dlgRole').dialog('close');
+			$(":checkbox[name='cbRole']").attr("checked", false);
+		}
+		var dlgCancel = function() {
+			$('#dlgRole').dialog('close');
+			$(":checkbox[name='cbRole']").attr("checked", false);
+		}
+
+		var dlgOpen = function() {
+			$.ajax({
+				url : "../positionrole!selectAss",
+				type : "post",
+				data : {
+					hidPositionId : $("#hidPositionId").val()
+				},
+				dataType : "json",
+				success : function(data) {
+					var list = data.assList;
+					for ( var i in list) {
+						$(":checkbox[name='cbRole']").each(
+								function(index, element) {
+									if ($(this).val() == list[i].roleId) {
+										$(this).attr("checked", true);
+									}
+								});
+					}
+				},
+				error : function(a, b, c) {
+					alert(b);
+				}
+			});
+		}
+
+		function getRoleList() {
+			$.ajax({
+						url : "../role!getList",
+						type : "post",
+						data : {},
+						dataType : "json",
+						success : function(data) {
+							var list = data.rows;
+							for ( var row in list) {
+								$("#divCBox").append("<input style='margin-left:10px;' type=\"checkbox\" name=\"cbRole\" value='"+list[row].id+"'>"+ list[row].name);
+							}
+						}
+					});
+		}
+
+		$(function() {
+			getRoleList();
+		});
 	</script>
 </body>
 </html>

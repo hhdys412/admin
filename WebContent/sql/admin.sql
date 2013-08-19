@@ -214,3 +214,9 @@ CREATE  TABLE IF NOT EXISTS `depart_role_ass` (
   `role_id` INT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE  TABLE IF NOT EXISTS `position_role_ass` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `position_id` INT NULL ,
+  `role_id` INT NULL ,
+  PRIMARY KEY (`id`) );
