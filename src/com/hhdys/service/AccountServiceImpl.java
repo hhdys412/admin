@@ -8,11 +8,12 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import com.hhdys.dao.AccountMapper;
 import com.hhdys.model.Account;
 import com.hhdys.model.AccountExample;
-
+@Repository
 public class AccountServiceImpl implements AccountService {
 	private SqlSession session;
 

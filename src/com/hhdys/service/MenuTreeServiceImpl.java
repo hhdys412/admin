@@ -7,11 +7,12 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import com.hhdys.dao.MenuTreeMapper;
 import com.hhdys.model.MenuTree;
 import com.hhdys.model.MenuTreeExample;
-
+@Repository
 public class MenuTreeServiceImpl implements MenuTreeService {
 	@Resource(name = "sqlSession")
 	private SqlSession session;

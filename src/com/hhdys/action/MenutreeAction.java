@@ -14,6 +14,8 @@ import jodd.util.StringUtil;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ResultPath;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hhdys.model.MenuTree;
 import com.hhdys.service.MenuTreeService;
@@ -21,13 +23,15 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @Namespace("/admin")
 @ResultPath("/")
+@Service
 public class MenutreeAction extends ActionSupport {
-	@Resource(name = "menutree")
+	@Autowired
 	private MenuTreeService service;
-	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
+	
 
 	public void getList() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String flagStr=request.getParameter("flag");
@@ -46,6 +50,8 @@ public class MenutreeAction extends ActionSupport {
 	}
 
 	public void addTree() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		String newUrlText = request.getParameter("newUrlText");
 		String newUrl = request.getParameter("newUrl");
 		String hidId = request.getParameter("hidId");
@@ -65,6 +71,8 @@ public class MenutreeAction extends ActionSupport {
 	}
 	
 	public void updateTree() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		String newUrlText = request.getParameter("selUrlText");
 		String newUrl = request.getParameter("selUrl");
 		String hidId = request.getParameter("hidId");
@@ -84,6 +92,8 @@ public class MenutreeAction extends ActionSupport {
 	}
 	
 	public void delTree() throws IOException{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		String hidId = request.getParameter("id");
 		service.delMenu(Integer.parseInt(hidId));
 		PrintWriter out = response.getWriter();

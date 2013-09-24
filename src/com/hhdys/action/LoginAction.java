@@ -1,6 +1,5 @@
 package com.hhdys.action;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +9,8 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hhdys.service.AccountService;
 import com.hhdys.util.CookieUtil;
@@ -17,14 +18,15 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @Namespace("/admin")
 @ResultPath("/")
+@Service
 public class LoginAction extends ActionSupport {
-	@Resource(name = "as")
+	@Autowired
 	private AccountService as;
-	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
 
-	@Action(results = { @Result(name = "index", location = "login!index", type = "redirect") })
+	@Action(results = { @Result(name = "index", location = "login!index", type = "redirectAction") })
 	public String login() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		if (as.checkUser(userName, password)) {
@@ -40,7 +42,6 @@ public class LoginAction extends ActionSupport {
 	public String index() {
 		return "main";
 	}
-
 
 	public AccountService getAs() {
 		return as;

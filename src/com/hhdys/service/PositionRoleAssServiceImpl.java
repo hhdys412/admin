@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.hhdys.dao.PositionRoleAssMapper;
 import com.hhdys.model.PositionRoleAss;
 import com.hhdys.model.PositionRoleAssExample;
-
+@Repository
 public class PositionRoleAssServiceImpl implements PositionRoleAssService {
 	@Autowired
 	private SqlSession sqlSession;

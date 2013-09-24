@@ -2,17 +2,17 @@ package com.hhdys.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hhdys.model.Account;
 import com.hhdys.model.Position;
@@ -22,15 +22,14 @@ import com.hhdys.service.PositionService;
 import com.hhdys.service.RoleService;
 import com.opensymphony.xwork2.ActionSupport;
 
+@Service
 public class AccountAction extends ActionSupport {
-	@Resource(name = "as")
+	@Autowired
 	private AccountService as;
-	@Resource(name = "role")
+	@Autowired
 	private RoleService roleService;
-	@Resource(name = "position")
+	@Autowired
 	private PositionService positionService;
-	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
 
 	public AccountService getAs() {
 		return as;
@@ -41,6 +40,8 @@ public class AccountAction extends ActionSupport {
 	}
 
 	public void showList() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String pageSizeStr = request.getParameter("rows");
@@ -59,6 +60,8 @@ public class AccountAction extends ActionSupport {
 	}
 
 	public void addAccount() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String userName = request.getParameter("username");
@@ -91,6 +94,8 @@ public class AccountAction extends ActionSupport {
 	}
 
 	public void editAccount() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String userName = request.getParameter("username");
@@ -125,6 +130,8 @@ public class AccountAction extends ActionSupport {
 	}
 
 	public void checkUserName() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String userName = request.getParameter("userName");
@@ -139,6 +146,8 @@ public class AccountAction extends ActionSupport {
 	}
 
 	public void delAccount() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String ids = request.getParameter("id");
@@ -151,6 +160,8 @@ public class AccountAction extends ActionSupport {
 	}
 
 	public void getRoleList() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		List<Role> list = roleService.getList();
@@ -162,6 +173,8 @@ public class AccountAction extends ActionSupport {
 	}
 
 	public void getPositionList() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		List<Position> list = positionService.getList();

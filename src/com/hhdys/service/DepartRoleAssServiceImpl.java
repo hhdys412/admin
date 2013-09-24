@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import com.hhdys.dao.DepartRoleAssMapper;
 import com.hhdys.dao.DepartmentMapper;
@@ -12,7 +13,7 @@ import com.hhdys.model.DepartRoleAss;
 import com.hhdys.model.DepartRoleAssExample;
 import com.hhdys.model.Department;
 import com.hhdys.model.DepartmentExample;
-
+@Repository
 public class DepartRoleAssServiceImpl implements DepartRoleAssService {
 	@Resource(name = "sqlSession")
 	private SqlSession session;

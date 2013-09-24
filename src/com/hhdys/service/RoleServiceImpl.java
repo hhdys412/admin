@@ -6,11 +6,12 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import com.hhdys.dao.RoleMapper;
 import com.hhdys.model.Role;
 import com.hhdys.model.RoleExample;
-
+@Repository
 public class RoleServiceImpl implements RoleService {
 	@Resource(name = "sqlSession")
 	private SqlSession session;

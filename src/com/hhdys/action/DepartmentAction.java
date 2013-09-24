@@ -11,6 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ResultPath;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hhdys.model.Department;
 import com.hhdys.service.DepartmentService;
@@ -18,11 +20,11 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @Namespace("/admin")
 @ResultPath("/")
+@Service
 public class DepartmentAction extends ActionSupport {
-	@Resource(name = "department")
+	@Autowired
 	private DepartmentService service;
-	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
+	
 
 	public DepartmentService getService() {
 		return service;
@@ -33,6 +35,8 @@ public class DepartmentAction extends ActionSupport {
 	}
 
 	public void getDepartmentTree() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out = response.getWriter();
@@ -42,6 +46,8 @@ public class DepartmentAction extends ActionSupport {
 	}
 
 	public void addDepartment() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String id = request.getParameter("hidId");
@@ -60,6 +66,8 @@ public class DepartmentAction extends ActionSupport {
 	}
 
 	public void delDepartment() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String id = request.getParameter("hidId");
@@ -73,6 +81,8 @@ public class DepartmentAction extends ActionSupport {
 	}
 
 	public void updateDepartment() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String id = request.getParameter("hidId");

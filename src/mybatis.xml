@@ -12,5 +12,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="config/PageFuncMapper.xml" />
 		<mapper resource="config/DepartRoleAssMapper.xml"/>
 		<mapper resource="config/PositionRoleAssMapper.xml"/>
+		<mapper resource="config/RoleFuncAssMapper.xml"/>
 	</mappers>
 </configuration>

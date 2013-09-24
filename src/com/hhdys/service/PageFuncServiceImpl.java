@@ -5,11 +5,12 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import com.hhdys.dao.PageFuncMapper;
 import com.hhdys.model.PageFunc;
 import com.hhdys.model.PageFuncExample;
-
+@Repository
 public class PageFuncServiceImpl implements PageFuncService {
 
 	@Resource(name = "sqlSession")

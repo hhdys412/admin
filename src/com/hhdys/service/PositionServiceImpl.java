@@ -6,11 +6,12 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
 
 import com.hhdys.dao.PositionMapper;
 import com.hhdys.model.Position;
 import com.hhdys.model.PositionExample;
-
+@Repository
 public class PositionServiceImpl implements PositionService {
 	@Resource(name = "sqlSession")
 	private SqlSession session;

@@ -11,6 +11,7 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.json.annotations.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hhdys.model.PositionRoleAss;
 import com.hhdys.service.PositionRoleAssService;
@@ -19,6 +20,7 @@ import com.opensymphony.xwork2.ActionSupport;
 @ParentPackage("json-default")
 @Namespace("/admin")
 @ResultPath("/")
+@Service
 public class PositionroleAction extends ActionSupport {
 	@Autowired
 	private PositionRoleAssService postionroleass;

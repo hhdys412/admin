@@ -13,6 +13,8 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hhdys.model.Role;
 import com.hhdys.service.RoleService;
@@ -20,13 +22,15 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @Namespace("/admin")
 @ResultPath("/")
+@Service
 public class RoleAction extends ActionSupport {
-	@Resource(name = "role")
+	@Autowired
 	private RoleService service;
-	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
+	
 
 	public void getList() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		List<Role> list = service.getList();
@@ -39,6 +43,8 @@ public class RoleAction extends ActionSupport {
 	}
 
 	public void delRole() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String ids = request.getParameter("id");
@@ -50,6 +56,8 @@ public class RoleAction extends ActionSupport {
 	}
 
 	public void updateRole() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String id = StringUtils.defaultString(request.getParameter("id"), "");
@@ -69,6 +77,8 @@ public class RoleAction extends ActionSupport {
 	}
 
 	public void addRole() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String name = StringUtils.defaultString(request.getParameter("name"), "");

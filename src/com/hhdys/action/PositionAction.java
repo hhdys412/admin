@@ -14,6 +14,8 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hhdys.model.Position;
 import com.hhdys.service.PositionService;
@@ -21,11 +23,11 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @Namespace("/admin")
 @ResultPath("/")
+@Service
 public class PositionAction extends ActionSupport {
-	@Resource(name = "position")
+	@Autowired
 	private PositionService service;
-	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
+	
 
 	public PositionService getService() {
 		return service;
@@ -36,6 +38,8 @@ public class PositionAction extends ActionSupport {
 	}
 
 	public void getList() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		List<Position> list = service.getList();
@@ -48,6 +52,8 @@ public class PositionAction extends ActionSupport {
 	}
 
 	public void delPosition() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String ids = request.getParameter("id");
@@ -59,6 +65,8 @@ public class PositionAction extends ActionSupport {
 	}
 
 	public void updatePosition() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String id = StringUtils.defaultString(request.getParameter("id"), "");
@@ -78,6 +86,8 @@ public class PositionAction extends ActionSupport {
 	}
 
 	public void addPosition() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String position = StringUtils.defaultString(request.getParameter("name"), "");

@@ -17,27 +17,27 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.json.annotations.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.hhdys.model.DepartRoleAss;
 import com.hhdys.service.DepartRoleAssService;
 import com.opensymphony.xwork2.ActionSupport;
 
-
-
 @ParentPackage("json-default")
 @Namespace("/admin")
 @ResultPath("/")
+@Service
 public class DepartroleassAction extends ActionSupport {
-	@Resource(name = "departroleass")
+	@Autowired
 	private DepartRoleAssService service;
 	private String roleid;
 	private int departmentid;
 	private List<DepartRoleAss> assList;
 
-	HttpServletRequest request = ServletActionContext.getRequest();
-	HttpServletResponse response = ServletActionContext.getResponse();
-
 	public void addAss() throws IOException {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
 		Pattern pattern = Pattern.compile("\\d");
 		Matcher matcher = pattern.matcher(roleid);
 		service.delDepartRoleAss(departmentid);// 添加之前先清空之前的角色
@@ -58,7 +58,7 @@ public class DepartroleassAction extends ActionSupport {
 
 	@Action(results = { @Result(name = "success", type = "json") })
 	public String selectAss() {
-		assList=service.getAssByDepartIdAndRoleId(departmentid);
+		assList = service.getAssByDepartIdAndRoleId(departmentid);
 		return "success";
 	}
 
