@@ -39,6 +39,7 @@
 <body>
 	<table id="dg" class="easyui-datagrid" url="../role!getList"
 		toolbar="#toolbar" fitColumns="false" rownumbers="true"
+		singleSelect="true"
 		data-options="onBeforeEdit:beforeEdit,onAfterEdit:afterEdit,onCancelEdit:cancelEdit">
 		<thead>
 			<tr>
@@ -75,7 +76,7 @@
 	</div>
 
 	<!-- 设置权限 -->
-	<div id="dlgRole" class="easyui-dialog" title="设置权限"
+	<div id="dlgFunc" class="easyui-dialog" title="设置权限"
 		style="width: 800px; height: 600px;"
 		data-options="closed:true,
                 buttons: [{
@@ -214,7 +215,7 @@
 			var row = $("#dg").datagrid("getSelected");
 			if (row != null) {
 				$("#hidRoleId").val(row.id);
-				$('#dlgRole').dialog('open');
+				$('#dlgFunc').dialog('open');
 			} else {
 				alert("请选择一个角色！");
 				return false;
@@ -229,7 +230,7 @@
 			if (selected != "") {
 				selected = selected.substring(0, selected.length - 1);
 			} else {
-				alert("请选择一个角色！");
+				alert("请选择一个功能！");
 				return false;
 			}
 			$.ajax({
@@ -246,28 +247,28 @@
 					}
 				}
 			});
-			$('#dlgRole').dialog('close');
+			$('#dlgFunc').dialog('close');
 			$(":checkbox[name='cbFunc']").attr("checked", false);
 		}
 		var dlgCancel = function() {
-			$('#dlgRole').dialog('close');
-			$(":checkbox[name='cbRole']").attr("checked", false);
+			$('#dlgFunc').dialog('close');
+			$(":checkbox[name='cbFunc']").attr("checked", false);
 		}
 
 		var dlgOpen = function() {
 			$.ajax({
-				url : "../positionrole!selectAss",
+				url : "../rolefunc!getFuncsByRoleId",
 				type : "post",
 				data : {
-					hidPositionId : $("#hidRoleId").val()
+					roleId : $("#hidRoleId").val()
 				},
 				dataType : "json",
 				success : function(data) {
-					var list = data.assList;
+					var list = data.roleFuncAsses;
 					for ( var i in list) {
-						$(":checkbox[name='cbRole']").each(
+						$(":checkbox[name='cbFunc']").each(
 								function(index, element) {
-									if ($(this).val() == list[i].roleId) {
+									if ($(this).val() == list[i].funcId) {
 										$(this).attr("checked", true);
 									}
 								});
@@ -280,8 +281,7 @@
 		}
 
 		function getRoleList() {
-			$
-					.ajax({
+			$.ajax({
 						url : "../rolefunc!selPageFuncs",
 						type : "post",
 						data : {},

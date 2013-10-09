@@ -13,6 +13,7 @@ import com.hhdys.model.MenuTree;
 import com.hhdys.model.PageFunc;
 import com.hhdys.model.PageFuncExample;
 import com.hhdys.model.RoleFuncAss;
+import com.hhdys.model.RoleFuncAssExample;
 
 @Repository
 public class RoleFuncServiceImpl implements RoleFuncService {
@@ -55,5 +56,21 @@ public class RoleFuncServiceImpl implements RoleFuncService {
 	@Override
 	public void addAss(RoleFuncAss ass) {
 		roleFuncDao.insert(ass);
+	}
+
+	@Override
+	public List<RoleFuncAss> getPageFuncsByRoleId(int roleId) {
+		RoleFuncAssExample example = new RoleFuncAssExample();
+		RoleFuncAssExample.Criteria criteria = example.createCriteria();
+		criteria.andRoleIdEqualTo(roleId);
+		return roleFuncDao.selectByExample(example);
+	}
+
+	@Override
+	public void delFuncByRoleId(int roleId) {
+		RoleFuncAssExample example = new RoleFuncAssExample();
+		RoleFuncAssExample.Criteria criteria = example.createCriteria();
+		criteria.andRoleIdEqualTo(roleId);
+		roleFuncDao.deleteByExample(example);
 	}
 }

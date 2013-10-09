@@ -59,7 +59,9 @@
 			href="javascript:void(0)" class="easyui-linkbutton"
 			iconCls="icon-edit" plain="true" onClick="editUser()">编辑</a> <a
 			href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-remove" plain="true" onClick="destroyUser()">删除</a>
+			iconCls="icon-remove" plain="true" onClick="destroyUser()">删除</a><a
+			href="javascript:void(0)" class="easyui-linkbutton"
+			iconCls="icon-save" onclick="openSetRole()" plain="true">设置权限</a>
 	</div>
 
 	<div id="dlg" class="easyui-dialog"
@@ -113,10 +115,33 @@
 			href="javascript:void(0)" class="easyui-linkbutton"
 			iconCls="icon-cancel" onClick="javascript:$('#dlg').dialog('close')">取消</a>
 	</div>
+
+	<!-- 设置权限 -->
+	<div id="dlgFunc" class="easyui-dialog" title="设置权限"
+		style="width: 800px; height: 600px;"
+		data-options="closed:true,
+                buttons: [{
+                    text:'保存',
+                    iconCls:'icon-ok',
+                    handler:dlgSave
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:dlgCancel
+                }],
+                onOpen:dlgOpen
+            ">
+		<form id="roleForm" method="post">
+			<div id="divCBox" style="margin: 10px 10px 10px 10px;"></div>
+			<input type="hidden" id="hidAccountId" name="hidAccountId" />
+		</form>
+	</div>
+
 	<script type="text/javascript">
 		$(function() {
 			getRoleList();
 			getPositionList();
+			getPageFuncList();
 			$("#username").blur(function() {
 				$.ajax({
 					url : "../account!checkUserName",
@@ -127,9 +152,9 @@
 					dataType : "text",
 					success : function(data) {
 						if (data == "false") {
-						//	alert("用户名已存在！");
+							//	alert("用户名已存在！");
 							$("#hidCheck").val("0");
-						}else{
+						} else {
 							$("#hidCheck").val("1");
 						}
 					}
@@ -164,7 +189,9 @@
 				});
 				$("#username").hide();
 				$("#spanUserName").remove();
-				$("#username").after("<span id='spanUserName'>"+$("#username").val()+"</span>");
+				$("#username").after(
+						"<span id='spanUserName'>" + $("#username").val()
+								+ "</span>");
 				$('#department').combotree('setValue', row.department_id);
 				$("#saveBtn").attr("onClick", "submitChange(" + row.id + ")");
 			}
@@ -311,6 +338,100 @@
 				return "男";
 			}
 			return "女";
+		}
+
+		function openSetRole() {
+			var row = $("#dg").datagrid("getSelected");
+			if (row != null) {
+				$("#hidAccountId").val(row.id);
+				$('#dlgFunc').dialog('open');
+			} else {
+				alert("请选择一个用户！");
+				return false;
+			}
+		}
+		function getPageFuncList() {
+			$.ajax({
+						url : "../rolefunc!selPageFuncs",
+						type : "post",
+						data : {},
+						dataType : "json",
+						success : function(data) {
+							var map = data.map;
+							var html = "<table width='99%'>";
+							for ( var row in map) {
+								html += "<tr><td align='right' width='120px'>"
+										+ row + "：</td><td>";
+								for ( var item in map[row]) {
+									html += "<input style='margin-left:10px;' type=\"checkbox\" name=\"cbFunc\" value='"+map[row][item].id+"'>"
+											+ map[row][item].func;
+								}
+								html += "</td></tr>";
+							}
+							$("#divCBox").append(html);
+						}
+					});
+		}
+
+		var dlgSave = function() {
+			var selected = "";
+			$(":checked[name='cbFunc']").each(function(index, element) {
+				selected += $(this).val() + ",";
+			})
+			if (selected != "") {
+				selected = selected.substring(0, selected.length - 1);
+			} else {
+				alert("请选择一个角色！");
+				return false;
+			}
+			$.ajax({
+				url : "../accountfunc!addAccountFuncAss",
+				type : "post",
+				data : {
+					funcIds : selected,
+					accountId : $("#hidAccountId").val()
+				},
+				dataType : "json",
+				success : function(data) {
+					if (data.result == "success") {
+						alert(data.msg);
+					}
+				},
+				error : function(a, b, c) {
+					alert(b);
+				}
+			});
+			$('#dlgFunc').dialog('close');
+			$(":checkbox[name='cbFunc']").attr("checked", false);
+		}
+		var dlgCancel = function() {
+			$('#dlgFunc').dialog('close');
+			$(":checkbox[name='cbFunc']").attr("checked", false);
+		}
+
+		var dlgOpen = function() {
+			$.ajax({
+				url : "../accountfunc!getFuncsByRoleId",
+				type : "post",
+				data : {
+					accountId : $("#hidAccountId").val()
+				},
+				dataType : "json",
+				success : function(data) {
+					var list = data.list;
+					for ( var i in list) {
+						$(":checkbox[name='cbFunc']").each(
+								function(index, element) {
+									if ($(this).val() == list[i].funcId) {
+										$(this).attr("checked", true);
+									}
+								});
+					}
+				},
+				error : function(a, b, c) {
+					alert(b);
+				}
+			});
 		}
 	</script>
 </body>

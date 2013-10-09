@@ -10,8 +10,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="config/RoleMapper.xml" />
 		<mapper resource="config/MenuTreeMapper.xml" />
 		<mapper resource="config/PageFuncMapper.xml" />
-		<mapper resource="config/DepartRoleAssMapper.xml"/>
-		<mapper resource="config/PositionRoleAssMapper.xml"/>
-		<mapper resource="config/RoleFuncAssMapper.xml"/>
+		<mapper resource="config/DepartRoleAssMapper.xml" />
+		<mapper resource="config/PositionRoleAssMapper.xml" />
+		<mapper resource="config/RoleFuncAssMapper.xml" />
+		<mapper resource="config/AccountFuncAssMapper.xml" />
 	</mappers>
 </configuration>

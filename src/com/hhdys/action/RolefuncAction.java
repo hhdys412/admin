@@ -29,6 +29,8 @@ public class RolefuncAction extends ActionSupport {
 
 	private Map<String, List<PageFunc>> map;
 
+	private List<RoleFuncAss> roleFuncAsses;
+
 	private String msg;
 	private String result;
 
@@ -52,6 +54,7 @@ public class RolefuncAction extends ActionSupport {
 	@Action(value = "addFuncAss", results = { @Result(name = "success", type = "json") })
 	public String addFuncAss() {
 		String[] funcid = funcIds.split(",");
+		rolefuncService.delFuncByRoleId(roleId);
 		for (String fun : funcid) {
 			RoleFuncAss ass = new RoleFuncAss();
 			ass.setFuncId(Integer.parseInt(fun));
@@ -59,6 +62,13 @@ public class RolefuncAction extends ActionSupport {
 			rolefuncService.addAss(ass);
 		}
 		msg = "添加成功";
+		result = "success";
+		return "success";
+	}
+
+	@Action(value = "getFuncsByRoleId", results = { @Result(name = "success", type = "json") })
+	public String getFuncsByRoleId() {
+		roleFuncAsses = rolefuncService.getPageFuncsByRoleId(roleId);
 		result = "success";
 		return "success";
 	}
@@ -112,5 +122,13 @@ public class RolefuncAction extends ActionSupport {
 
 	public void setRolefuncService(RoleFuncService rolefuncService) {
 		this.rolefuncService = rolefuncService;
+	}
+
+	public List<RoleFuncAss> getRoleFuncAsses() {
+		return roleFuncAsses;
+	}
+
+	public void setRoleFuncAsses(List<RoleFuncAss> roleFuncAsses) {
+		this.roleFuncAsses = roleFuncAsses;
 	}
 }

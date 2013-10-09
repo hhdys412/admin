@@ -12,4 +12,8 @@ public interface RoleFuncService {
 	public List<PageFunc> getPageFuncsByPageId(int pageId);
 
 	public void addAss(RoleFuncAss ass);
+
+	List<RoleFuncAss> getPageFuncsByRoleId(int roleId);
+
+	void delFuncByRoleId(int roleId);
 }
